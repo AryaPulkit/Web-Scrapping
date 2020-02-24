@@ -1,0 +1,17 @@
+library(rvest)
+library(XML)
+library(magrittr)
+
+# Amazon Reviews #############################
+aurl <- "http://www.amazon.in/Apple-MMGF2HN-13-3-inch-Integrated-Graphics/product-reviews/B01FUK9TKG/ref=cm_cr_arp_d_paging_btm_2?showViewpoints=1&pageNumber"
+amazon_reviews <- NULL
+for (i in 1:20){
+  murl <- read_html(as.character(paste(aurl,i,sep="=")))
+  rev <- murl %>%
+    html_nodes(".review-text") %>%
+    html_text()
+  amazon_reviews <- c(amazon_reviews,rev)
+}
+getwd()
+write.table(amazon_reviews,"apple.txt")
+
