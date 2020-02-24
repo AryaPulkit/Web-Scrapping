@@ -1,0 +1,28 @@
+library("twitteR")
+library("ROAuth")
+
+cred <- OAuthFactory$new(consumerKey='****************', # Consumer Key (API Key)
+                         consumerSecret='***************', #Consumer Secret (API Secret)
+                         requestURL='https://api.twitter.com/oauth/request_token',
+                         accessURL='https://api.twitter.com/oauth/access_token',
+                         authURL='https://api.twitter.com/oauth/authorize')
+#cred$handshake(cainfo="cacert.pem")
+save(cred, file="twitter authentication.Rdata")
+
+load("twitter authentication.Rdata")
+
+library(base64enc)
+
+library(httpuv)
+
+setup_twitter_oauth("**********", # Consumer Key (API Key)
+                    "******************", #Consumer Secret (API Secret)
+                    "********************* ",  # Access Token
+                    "***********************")  #Access Token Secret
+
+#registerTwitterOAuth(cred)
+
+Tweets <- userTimeline('narendramodi', n = 1000,includeRts = T)
+
+TweetsDF <- twListToDF(Tweets)
+write.csv(TweetsDF, "Tweets.csv")
